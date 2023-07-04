@@ -3,7 +3,7 @@ package com.example.shoppinglistappmvvm.ui.shoppinglist
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglistappmvvm.R
@@ -23,11 +23,12 @@ class ShoppingActivity : AppCompatActivity() {
         val factory = ShoppingViewModelFactory(repository)
         // this is very bad practice, its better if we have a global place object and from there we all pass the instance object.
 
-        val viewModel = ViewModelProviders.of(this, factory).get(ShoppingViewModel::class.java)
+        val viewModel = ViewModelProvider(this, factory).get(ShoppingViewModel::class.java)
 
         val adapter = ShoppingItemAdapter(listOf(), viewModel)
-        findViewById<RecyclerView>(R.id.rvShoppingItems).layoutManager = LinearLayoutManager(this)
-        findViewById<RecyclerView>(R.id.rvShoppingItems).adapter = adapter
+        val rvShoppingItems = findViewById<RecyclerView>(R.id.rvShoppingItems)
+        rvShoppingItems.layoutManager = LinearLayoutManager(this)
+        rvShoppingItems.adapter = adapter
 
         viewModel.getALlShoppingItem().observe(this, Observer {
             adapter.items = it
